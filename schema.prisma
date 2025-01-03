@@ -18,6 +18,7 @@ model Book {
   type      String
   status    String
   yearRead  Int
+  genre     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
