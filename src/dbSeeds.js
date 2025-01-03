@@ -1,8 +1,19 @@
-import { createBook } from './books/actions.ts'
-import { sanitizeAndSerializeProviderData } from 'wasp/server/auth'
+import { faker } from '@faker-js/faker';
+import type { PrismaClient } from '@prisma/client';
+import { sanitizeAndSerializeProviderData } from 'wasp/server/auth';
 
-export const devSeed = async (prisma) => {
-  // First create a test user
+type MockBookData = {
+  title: string;
+  author: string;
+  type: 'written' | 'audio';
+  status: 'read' | 'currently reading' | 'will read';
+  yearRead: number;
+  genre: 'fiction' | 'nonfiction';
+  userId: number;
+};
+
+export const devSeed = async (prisma: PrismaClient) => {
+  // Create test user
   const testUser = await prisma.user.create({
     data: {
       auth: {
@@ -19,105 +30,32 @@ export const devSeed = async (prisma) => {
         },
       },
     },
-  })
+  });
 
-  const books = [
-    {
-      title: "To Kill a Mockingbird",
-      author: "Harper Lee",
-      type: "written",
-      status: "read",
-      yearRead: 2023,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "1984",
-      author: "George Orwell",
-      type: "written",
-      status: "currently reading",
-      yearRead: 2024,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "The Great Gatsby",
-      author: "F. Scott Fitzgerald",
-      type: "written",
-      status: "will read",
-      yearRead: 2024,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "Pride and Prejudice",
-      author: "Jane Austen",
-      type: "audio",
-      status: "read",
-      yearRead: 2022,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "The Catcher in the Rye",
-      author: "J.D. Salinger",
-      type: "written",
-      status: "read",
-      yearRead: 2021,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "The Hobbit",
-      author: "J.R.R. Tolkien",
-      type: "audio",
-      status: "currently reading",
-      yearRead: 2024,
-      genre: "fiction",
-      userId: testUser.id
-    },
-    {
-      title: "Sapiens: A Brief History of Humankind",
-      author: "Yuval Noah Harari",
-      type: "written",
-      status: "read",
-      yearRead: 2023,
-      genre: "nonfiction",
-      userId: testUser.id
-    },
-    {
-      title: "Atomic Habits",
-      author: "James Clear",
-      type: "audio",
-      status: "read",
-      yearRead: 2022,
-      genre: "nonfiction",
-      userId: testUser.id
-    },
-    {
-      title: "The Subtle Art of Not Giving a F*ck",
-      author: "Mark Manson",
-      type: "written",
-      status: "will read",
-      yearRead: 2024,
-      genre: "nonfiction",
-      userId: testUser.id
-    },
-    {
-      title: "Becoming",
-      author: "Michelle Obama",
-      type: "audio",
-      status: "currently reading",
-      yearRead: 2024,
-      genre: "nonfiction",
-      userId: testUser.id
-    }
-  ]
+  // Generate mock books
+  const books = generateMockBooksData(10, testUser.id);
+  
+  // Create books
+  await Promise.all(books.map(book => 
+    prisma.book.create({ data: book })
+  ));
+};
 
-  // Create books directly through Prisma since actions require auth
-  for (const book of books) {
-    await prisma.book.create({
-      data: book
-    })
-  }
+function generateMockBooksData(numOfBooks: number, userId: number): MockBookData[] {
+  return faker.helpers.multiple(() => generateMockBookData(userId), { count: numOfBooks });
+}
+
+function generateMockBookData(userId: number): MockBookData {
+  const currentYear = new Date().getFullYear();
+  const years = [currentYear - 1, currentYear, currentYear + 1];
+  
+  return {
+    title: faker.lorem.words({ min: 1, max: 5 }),
+    author: faker.person.fullName(),
+    type: faker.helpers.arrayElement(['written', 'audio']),
+    status: faker.helpers.arrayElement(['read', 'currently reading', 'will read']),
+    yearRead: faker.helpers.arrayElement(years),
+    genre: faker.helpers.arrayElement(['fiction', 'nonfiction']),
+    userId
+  };
 }
