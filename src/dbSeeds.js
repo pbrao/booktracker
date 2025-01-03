@@ -1,18 +1,7 @@
 import { faker } from '@faker-js/faker';
-import type { PrismaClient } from '@prisma/client';
 import { sanitizeAndSerializeProviderData } from 'wasp/server/auth';
 
-type MockBookData = {
-  title: string;
-  author: string;
-  type: 'written' | 'audio';
-  status: 'read' | 'currently reading' | 'will read';
-  yearRead: number;
-  genre: 'fiction' | 'nonfiction';
-  userId: number;
-};
-
-export const devSeed = async (prisma: PrismaClient) => {
+export const devSeed = async (prisma) => {
   // Create test user
   const testUser = await prisma.user.create({
     data: {
@@ -55,11 +44,11 @@ export const devSeed = async (prisma: PrismaClient) => {
   ));
 };
 
-function generateMockBooksData(numOfBooks: number, userId: number): MockBookData[] {
+function generateMockBooksData(numOfBooks, userId) {
   return faker.helpers.multiple(() => generateMockBookData(userId), { count: numOfBooks });
 }
 
-function generateMockBookData(userId: number): MockBookData {
+function generateMockBookData(userId) {
   const currentYear = new Date().getFullYear();
   const years = [currentYear - 1, currentYear, currentYear + 1];
   
