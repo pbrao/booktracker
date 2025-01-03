@@ -1,0 +1,50 @@
+app booktracker {
+  wasp: {
+    version: "^0.15.0"
+  },
+  title: "booktracker",
+
+  auth: {
+    userEntity: User,
+    methods: {
+      usernameAndPassword: {},
+    },
+    onAuthFailedRedirectTo: "/login",
+  }
+}
+
+route RootRoute { path: "/", to: MainPage }
+page MainPage {
+  authRequired: true,
+  component: import { MainPage } from "@src/MainPage"
+}
+
+route LoginRoute { path: "/login", to: LoginPage }
+page LoginPage {
+  component: import { LoginPage } from "@src/auth/LoginPage"
+}
+
+route SignupRoute { path: "/signup", to: SignupPage }
+page SignupPage {
+  component: import { SignupPage } from "@src/auth/SignupPage"
+}
+
+query getBooks {
+  fn: import { getBooks } from "@src/books/queries.ts",
+  entities: [Book]
+}
+
+action createBook {
+  fn: import { createBook } from "@src/books/actions.ts",
+  entities: [Book]
+}
+
+action updateBook {
+  fn: import { updateBook } from "@src/books/actions.ts",
+  entities: [Book]
+}
+
+action deleteBook {
+  fn: import { deleteBook } from "@src/books/actions.ts",
+  entities: [Book]
+}
