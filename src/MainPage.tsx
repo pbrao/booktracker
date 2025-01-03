@@ -370,62 +370,64 @@ function StatsBox({ books }: { books: Book[] }) {
         <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
           Format Distribution
         </Typography>
-      <PieChart
-        series={[
-          {
-            data: pieChartData,
-            innerRadius: 20,
-            outerRadius: 60,
-            paddingAngle: 5,
-            cornerRadius: 5,
-            highlightScope: { faded: "global", highlighted: "item" },
-            faded: { innerRadius: 20, additionalRadius: -20, color: "gray" },
-          },
-        ]}
-        height={150}
-        width={250}
-        slotProps={{
-          legend: {
-            direction: "row",
-            position: { vertical: "bottom", horizontal: "right" },
-            padding: { left: 50 },
-            labelStyle: {
-              fontSize: 12,
+        <PieChart
+          series={[
+            {
+              data: pieChartData,
+              innerRadius: 20,
+              outerRadius: 60,
+              paddingAngle: 5,
+              cornerRadius: 5,
+              highlightScope: { faded: "global", highlighted: "item" },
+              faded: { innerRadius: 20, additionalRadius: -20, color: "gray" },
             },
-          },
-        }}
-      />
-      <Typography variant="body1" gutterBottom>
-        Books by Year:
-      </Typography>
-      <BarChart
-        xAxis={[
-          {
-            dataKey: "year",
-            scaleType: "band",
-          },
-        ]}
-        series={[
-          {
-            dataKey: "count",
-            label: "Books Read",
-            color: "#1f77b4",
-          },
-        ]}
-        dataset={Object.entries(booksByYear).map(([year, count]) => ({
-          year: Number(year),
-          count,
-        }))}
-        height={200}
-        width={250}
-        margin={{ top: 10 }}
-        slotProps={{
-          legend: {
-            hidden: true,
-          },
-        }}
-      />
-    </Box>
+          ]}
+          height={150}
+          width={250}
+          slotProps={{
+            legend: {
+              direction: "row",
+              position: { vertical: "bottom", horizontal: "right" },
+              padding: { left: 50 },
+              labelStyle: {
+                fontSize: 12,
+              },
+            },
+          }}
+        />
+
+        <Typography variant="subtitle1" gutterBottom sx={{ mt: 3, fontWeight: 600 }}>
+          Books by Year
+        </Typography>
+        <BarChart
+          xAxis={[
+            {
+              dataKey: "year",
+              scaleType: "band",
+            },
+          ]}
+          series={[
+            {
+              dataKey: "count",
+              label: "Books Read",
+              color: "#1f77b4",
+            },
+          ]}
+          dataset={Object.entries(booksByYear).map(([year, count]) => ({
+            year: Number(year),
+            count,
+          }))}
+          height={200}
+          width={250}
+          margin={{ top: 10 }}
+          slotProps={{
+            legend: {
+              hidden: true,
+            },
+          }}
+        />
+      </CardContent>
+    </Card>
   );
 }
 
