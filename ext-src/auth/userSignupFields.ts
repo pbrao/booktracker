@@ -3,7 +3,7 @@ import { type GetUserSignupFieldsFn } from "wasp/auth/types";
 export const getEmailUserFields: GetUserSignupFieldsFn = () => {
   return {
     fields: {
-      email: {
+      username: {
         type: "text",
         label: "Username",
         placeholder: "Enter your username",
