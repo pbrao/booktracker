@@ -2,24 +2,39 @@ import { faker } from '@faker-js/faker';
 import { sanitizeAndSerializeProviderData } from 'wasp/server/auth';
 
 export const devSeed = async (prisma) => {
-  // Create test user
-  const testUser = await prisma.user.create({
-    data: {
+  // Check if test user already exists
+  let testUser = await prisma.user.findFirst({
+    where: {
       auth: {
-        create: {
-          identities: {
-            create: {
-              providerName: 'username',
-              providerUserId: 'testuser',
-              providerData: await sanitizeAndSerializeProviderData({
-                hashedPassword: 'test1234'
-              }),
+        identities: {
+          some: {
+            providerUserId: 'testuser'
+          }
+        }
+      }
+    }
+  });
+
+  // If test user doesn't exist, create it
+  if (!testUser) {
+    testUser = await prisma.user.create({
+      data: {
+        auth: {
+          create: {
+            identities: {
+              create: {
+                providerName: 'username',
+                providerUserId: 'testuser',
+                providerData: await sanitizeAndSerializeProviderData({
+                  hashedPassword: 'test1234'
+                }),
+              },
             },
           },
         },
       },
-    },
-  });
+    });
+  }
 
   // Generate mock books
   const books = generateMockBooksData(10, testUser.id);
