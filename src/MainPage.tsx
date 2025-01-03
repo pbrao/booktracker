@@ -89,7 +89,7 @@ function BooksList({ books }: { books: Book[] }) {
 
   return (
     <>
-      <Box display="flex" alignItems="center" gap={1} mb={2}>
+      <Box display="flex" alignItems="center" gap={1} mb={2} >
         <Typography variant="subtitle1">Filter By:</Typography>
       <Box display="flex" gap={2} mb={2}>
         <Autocomplete
