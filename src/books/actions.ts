@@ -20,6 +20,11 @@ export const createBook: CreateBook<CreateBookArgs, Book> = async (
       status,
       yearRead,
       genre,
+      user: {
+        connect: {
+          id: context.user.id
+        }
+      }
     },
   });
 };
