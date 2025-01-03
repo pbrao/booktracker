@@ -47,7 +47,7 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
           </Box>
           {user && (
             <Typography variant="h4" gutterBottom>
-              {`${user.identities.username?.id}'s Books :)`}
+              {`${user.identities.username?.id}'s Reading Log`}
             </Typography>
           )}
           <NewBookForm />
