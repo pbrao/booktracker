@@ -7,8 +7,8 @@ export const getEmailUserFields: GetUserSignupFieldsFn = () => {
         type: "text",
         label: "Username",
         placeholder: "Enter your username",
-      },
-    },
+      }
+    }
   };
 };
 
@@ -19,8 +19,8 @@ export const getGoogleUserFields: GetUserSignupFieldsFn = () => {
         type: "text",
         label: "Username",
         placeholder: "Enter your username",
-      },
-    },
+      }
+    }
   };
 };
 
@@ -31,8 +31,8 @@ export const getGitHubUserFields: GetUserSignupFieldsFn = () => {
         type: "text",
         label: "Username",
         placeholder: "Enter your username",
-      },
-    },
+      }
+    }
   };
 };
 
@@ -43,7 +43,7 @@ export const getDiscordUserFields: GetUserSignupFieldsFn = () => {
         type: "text",
         label: "Username",
         placeholder: "Enter your username",
-      },
-    },
+      }
+    }
   };
 };
