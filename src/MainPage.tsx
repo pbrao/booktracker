@@ -18,11 +18,21 @@ import {
   MenuItem,
   Button,
   Typography,
+  AppBar,
+  Toolbar,
   Container,
   Box,
   SelectChangeEvent,
   Autocomplete,
+  Card,
+  CardContent,
+  Divider,
+  useTheme,
+  alpha,
 } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import { PieChart } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 
@@ -32,26 +42,71 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
   if (isLoading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error: {error.message}</Typography>;
 
+  const theme = useTheme();
+  
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" width="100%" sx={{ position: "fixed", top: 16, right: 16 }}>
-        <Button variant="contained" color="primary" onClick={logout}>
-          Logout
-        </Button>
-      </Box>
-      {books && <StatsBox books={books} />}
-      <Container>
-        <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-          <Box sx={{ maxWidth: "150px", borderRadius: 2, overflow: 'hidden' }}>
-            <img src={booksLogo} alt="books logo" style={{ display: 'block', width: '100%' }} />
-          </Box>
-          {user && (
-            <Typography variant="h4" gutterBottom>
-              {`${user.identities.username?.id}'s Reading Log`}
+      <AppBar position="fixed" elevation={0} sx={{ 
+        backgroundColor: alpha(theme.palette.background.paper, 0.9),
+        backdropFilter: 'blur(8px)'
+      }}>
+        <Toolbar>
+          <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+            <LibraryBooksIcon sx={{ mr: 2, color: theme.palette.primary.main }} />
+            <Typography variant="h6" color="primary" sx={{ fontWeight: 600 }}>
+              ReadingLog
             </Typography>
-          )}
-          <NewBookForm />
-          {books && <BooksList books={books} />}
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <AccountCircleIcon />
+              <Typography variant="subtitle2">
+                {user.identities.username?.id}
+              </Typography>
+            </Box>
+            <Button 
+              variant="outlined" 
+              onClick={logout}
+              startIcon={<LogoutIcon />}
+              size="small"
+            >
+              Logout
+            </Button>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Toolbar /> {/* Spacer for fixed AppBar */}
+      
+      <Container maxWidth="xl" sx={{ mt: 4, mb: 8 }}>
+        <Box display="flex" gap={4}>
+          {/* Stats Panel */}
+          <Box sx={{ width: 320, flexShrink: 0 }}>
+            {books && <StatsBox books={books} />}
+          </Box>
+          
+          {/* Main Content */}
+          <Box sx={{ flex: 1 }}>
+            <Card elevation={0} sx={{ mb: 4, backgroundColor: alpha(theme.palette.primary.main, 0.03) }}>
+              <CardContent>
+                <Box display="flex" alignItems="center" gap={3} mb={3}>
+                  <Box sx={{ width: 100, height: 100, borderRadius: 2, overflow: 'hidden' }}>
+                    <img src={booksLogo} alt="books logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
+                      Reading Log
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.secondary">
+                      Track and manage your reading journey
+                    </Typography>
+                  </Box>
+                </Box>
+                <NewBookForm />
+              </CardContent>
+            </Card>
+            
+            {books && <BooksList books={books} />}
+          </Box>
         </Box>
       </Container>
     </>
@@ -292,29 +347,29 @@ function StatsBox({ books }: { books: Book[] }) {
     { id: 1, value: audioBooks, label: "Audio Books" },
   ];
 
+  const theme = useTheme();
+  
   return (
-    <Box
-      sx={{
-        position: "fixed",
-        top: 16,
-        left: 16,
-        backgroundColor: "white",
-        padding: 2,
-        borderRadius: 1,
-        boxShadow: 1,
-        width: "300px",
-        zIndex: 1,
-      }}
-    >
-      <Typography variant="h6" gutterBottom>
-        Stats
-      </Typography>
-      <Typography variant="body1">
-        Total Books: <strong>{totalBooks}</strong>
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        Books by Format:
-      </Typography>
+    <Card elevation={0} sx={{ position: 'sticky', top: 88 }}>
+      <CardContent>
+        <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+          Reading Statistics
+        </Typography>
+        
+        <Box sx={{ mb: 3, p: 2, backgroundColor: alpha(theme.palette.primary.main, 0.03), borderRadius: 2 }}>
+          <Typography variant="h3" gutterBottom sx={{ fontWeight: 700 }}>
+            {totalBooks}
+          </Typography>
+          <Typography variant="subtitle2" color="text.secondary">
+            Total Books
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 3 }} />
+        
+        <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
+          Format Distribution
+        </Typography>
       <PieChart
         series={[
           {
