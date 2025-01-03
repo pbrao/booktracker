@@ -299,6 +299,7 @@ function BooksList({ books }: { books: Book[] }) {
                         type: book.type,
                         status: event.target.value,
                         yearRead: book.yearRead,
+                        genre: book.genre || 'fiction'
                       })
                     }
                   >
@@ -443,7 +444,14 @@ function NewBookForm() {
       const yearRead = parseInt((event.currentTarget.elements.namedItem("yearRead") as HTMLSelectElement).value);
 
       event.currentTarget.reset();
-      await createBook({ author, title, type, status, yearRead: yearRead || 2024 });
+      await createBook({ 
+        author, 
+        title, 
+        type, 
+        status, 
+        yearRead: yearRead || 2024,
+        genre: 'fiction'
+      });
     } catch (err: any) {
       window.alert("Error: " + err?.message);
     }
