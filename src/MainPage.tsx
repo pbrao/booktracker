@@ -219,15 +219,18 @@ function BooksList({ books }: { books: Book[] }) {
                 <TableCell sx={{ padding: "8px" }}>{book.yearRead}</TableCell>
                 <TableCell sx={{ padding: "8px" }}>
                   <Select
+                    size="small"
                     sx={{
                       ".MuiSelect-select": {
                         backgroundColor:
                           book.status === "read"
                             ? "lightgreen"
                             : book.status === "currently reading"
-                            ? "yellow"
+                              ? "yellow"
                             : "lightblue",
+                         padding: "4px 8px",
                       },
+                      height: "30px",
                     }}
                     value={book.status}
                     onChange={(event: SelectChangeEvent) =>
