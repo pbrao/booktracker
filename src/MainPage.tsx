@@ -89,6 +89,8 @@ function BooksList({ books }: { books: Book[] }) {
 
   return (
     <>
+      <Box display="flex" alignItems="center" gap={1} mb={2}>
+        <Typography variant="subtitle1">Filter By:</Typography>
       <Box display="flex" gap={2} mb={2}>
         <Autocomplete
           value={authorFilter}
@@ -131,6 +133,7 @@ function BooksList({ books }: { books: Book[] }) {
           <MenuItem value={2027}>2027</MenuItem>
           <MenuItem value={2028}>2028</MenuItem>
         </Select>
+      </Box>
       </Box>
       <TableContainer component={Paper} sx={{ width: "100%", overflowX: "auto" }}>
       <Table size="small" sx={{ minWidth: 1000 }}>
