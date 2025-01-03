@@ -2,10 +2,10 @@ import { type Book } from "wasp/entities";
 import { HttpError } from "wasp/server";
 import { type CreateBook, type UpdateBook, type DeleteBook } from "wasp/server/operations";
 
-type CreateBookArgs = Pick<Book, "author" | "title" | "type" | "status" | "yearRead">;
+type CreateBookArgs = Pick<Book, "author" | "title" | "type" | "status" | "yearRead" | "genre">;
 
 export const createBook: CreateBook<CreateBookArgs, Book> = async (
-  { author, title, type, status, yearRead },
+  { author, title, type, status, yearRead, genre },
   context
 ) => {
   if (!context.user) {
@@ -19,14 +19,15 @@ export const createBook: CreateBook<CreateBookArgs, Book> = async (
       type,
       status,
       yearRead,
+      genre,
     },
   });
 };
 
-type UpdateBookArgs = Pick<Book, "id" | "author" | "title" | "type" | "status" | "yearRead">;
+type UpdateBookArgs = Pick<Book, "id" | "author" | "title" | "type" | "status" | "yearRead" | "genre">;
 
 export const updateBook: UpdateBook<UpdateBookArgs> = async (
-  { id, author, title, type, status, yearRead },
+  { id, author, title, type, status, yearRead, genre },
   context
 ) => {
   if (!context.user) {
@@ -37,7 +38,7 @@ export const updateBook: UpdateBook<UpdateBookArgs> = async (
     where: {
       id,
     },
-    data: { author, title, type, status, yearRead },
+    data: { author, title, type, status, yearRead, genre },
   });
 };
 
