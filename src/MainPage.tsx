@@ -42,7 +42,9 @@ export const MainPage = ({ user }: { user: AuthUser }) => {
       {books && <StatsBox books={books} />}
       <Container>
         <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-          <img src={booksLogo} alt="books logo" style={{ maxWidth: "150px" }} sx={{ borderRadius: '16px' }} />
+          <Box sx={{ maxWidth: "150px", borderRadius: 2, overflow: 'hidden' }}>
+            <img src={booksLogo} alt="books logo" style={{ display: 'block', width: '100%' }} />
+          </Box>
           {user && (
             <Typography variant="h4" gutterBottom>
               {`${user.identities.username?.id}'s Books :)`}
