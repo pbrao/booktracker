@@ -226,7 +226,7 @@ function BooksList({ books }: { books: Book[] }) {
                           book.status === "read"
                             ? "lightgreen"
                             : book.status === "currently reading"
-                              ? "yellow"
+                              ? "khaki"
                             : "lightblue",
                          padding: "4px 8px",
                       },
