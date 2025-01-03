@@ -219,6 +219,16 @@ function BooksList({ books }: { books: Book[] }) {
                 <TableCell sx={{ padding: "8px" }}>{book.yearRead}</TableCell>
                 <TableCell sx={{ padding: "8px" }}>
                   <Select
+                    sx={{
+                      ".MuiSelect-select": {
+                        backgroundColor:
+                          book.status === "read"
+                            ? "lightgreen"
+                            : book.status === "currently reading"
+                            ? "yellow"
+                            : "lightblue",
+                      },
+                    }}
                     value={book.status}
                     onChange={(event: SelectChangeEvent) =>
                       void updateBook({
@@ -230,7 +240,6 @@ function BooksList({ books }: { books: Book[] }) {
                         yearRead: book.yearRead,
                       })
                     }
-                    size="small"
                   >
                     <MenuItem value="read">Read</MenuItem>
                     <MenuItem value="currently reading">Currently Reading</MenuItem>
