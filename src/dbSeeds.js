@@ -36,8 +36,11 @@ export const devSeed = async (prisma) => {
     });
   }
 
+  // Delete existing books to avoid duplicates
+  await prisma.book.deleteMany({});
+
   // Generate mock books
-  const books = generateMockBooksData(10, testUser.id);
+  const books = generateMockBooksData(10);
   
   // Create books
   await Promise.all(books.map(book => 
@@ -51,7 +54,7 @@ export const devSeed = async (prisma) => {
         genre: book.genre,
         user: {
           connect: {
-            id: book.userId
+            id: testUser.id
           }
         }
       }
@@ -59,11 +62,11 @@ export const devSeed = async (prisma) => {
   ));
 };
 
-function generateMockBooksData(numOfBooks, userId) {
-  return faker.helpers.multiple(() => generateMockBookData(userId), { count: numOfBooks });
+function generateMockBooksData(numOfBooks) {
+  return faker.helpers.multiple(() => generateMockBookData(), { count: numOfBooks });
 }
 
-function generateMockBookData(userId) {
+function generateMockBookData() {
   const currentYear = new Date().getFullYear();
   const years = [currentYear - 1, currentYear, currentYear + 1];
   
@@ -73,7 +76,6 @@ function generateMockBookData(userId) {
     type: faker.helpers.arrayElement(['written', 'audio']),
     status: faker.helpers.arrayElement(['read', 'currently reading', 'will read']),
     yearRead: faker.helpers.arrayElement(years),
-    genre: faker.helpers.arrayElement(['fiction', 'nonfiction']),
-    userId
+    genre: faker.helpers.arrayElement(['fiction', 'nonfiction'])
   };
 }
