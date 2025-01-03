@@ -52,7 +52,7 @@ export const devSeed = async (prisma) => {
         status: book.status,
         yearRead: book.yearRead,
         genre: book.genre,
-        user: {
+        User: {
           connect: {
             id: testUser.id
           }
